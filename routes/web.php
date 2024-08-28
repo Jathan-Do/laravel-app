@@ -4,26 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\HomeController;
 
+//Route mặc định
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('home');
 });
-// Route::get('/app', function () {
-//     return view('home');
-// });
-// Route::get('/homepage', function () {
-//     return view('homepage');
-// });
-// Route::get('/list', function () {
-//     return view('list');
-// })->name('list');
-// Route::get('/homepage', function () {
-//     return view('homepage');
-// })->name('homepage');
-
 // Route cho trang chủ sử dụng HomeController
 //                      Controller              function
 Route::get('/homepage', [HomeController::class, 'index']);
-Route::get('/filter', [HomeController::class, 'filter'])->name('filter');
-Route::get('/detail', [HomeController::class, 'detail'])->name('detail');
-Route::resource('service', ServiceController::class);
-Route::get('/service', [ServiceController::class, 'detail'])->name('detail');
+Route::get('/homepage/filter', [HomeController::class, 'filter'])->name('homepage.filter');
+
+// Route cho trang chủ sử dụng ServiceController
+// Route::resource('service', ServiceController::class);
+Route::get('/service', [ServiceController::class, 'index'])->name('service.index');
+Route::get('/service/create', [ServiceController::class, 'create'])->name('service.create');
+Route::post('/service/create', [ServiceController::class, 'store'])->name('service.store');
+Route::post('/service/delete{id}', [ServiceController::class, 'destroy'])->name('service.destroy');
+Route::get('/service/edit{id}', [ServiceController::class, 'edit'])->name('service.edit');
+Route::post('/service/edit{id}', [ServiceController::class, 'update'])->name('service.update');

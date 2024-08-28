@@ -4,7 +4,7 @@
         <div class="row row-cards">
             <div class="col-12">
                 <form class="card" method="POST" action="{{ route('service.update',[$service->id])}}" enctype="multipart/form-data">
-                    @method('PUT')
+                    @method('POST')
                     @csrf
                     <div class="card-body">
                         <h3 class="card-title">Update Service</h3>

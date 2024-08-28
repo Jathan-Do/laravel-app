@@ -71,7 +71,7 @@
                                         class="btn btn-primary mb-2">Edit</a>
                                     <form onsubmit="return confirm('Do you want to delete from the database ?')"
                                         action="{{ route('service.destroy', [$value->id]) }}" method='post'>
-                                        @method('DELETE')
+                                        @method('POST')
                                         @csrf
                                         <input type="submit" name="" id="" class="btn btn-danger"
                                             value="Delete">

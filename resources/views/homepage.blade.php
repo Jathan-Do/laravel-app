@@ -52,7 +52,7 @@
                 <div class="container-xl">
                     <div class="row g-4">
                         <div class="col-md-3">
-                            <form id="filter-form" action="{{ route('filter') }}" method="get" autocomplete="off"
+                            <form id="filter-form" action="{{ route('homepage.filter') }}" method="get" autocomplete="off"
                                 novalidate class="sticky-top">
                                 <div class="form-label">Job Types</div>
                                 <div class="mb-4">
