@@ -15,7 +15,7 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::getAllServices();
-        return view('list', compact('services'));
+        return view('admin.service.list', compact('services'));
     }
 
     /**
@@ -23,7 +23,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('create');
+        return view('admin.service.create');
     }
 
     /**
@@ -49,14 +49,14 @@ class ServiceController extends Controller
     public function edit(string $id)
     {
         $service = Service::getServiceById($id);
-        return view('edit', compact('service'));
+        return view('admin.service.edit', compact('service'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(ServiceRequest $request, string $id)
-    {        
+    {
         Service::updateService($id, $request->validated(), $request->file('feature_image'));
         return redirect()->route('service.index');
     }

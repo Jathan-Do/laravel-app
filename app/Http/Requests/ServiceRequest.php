@@ -21,7 +21,7 @@ class ServiceRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|max:200',
             'des' => 'required|max:200',
             'price' => 'required',
@@ -30,6 +30,11 @@ class ServiceRequest extends FormRequest
             'status' => 'required',
             'infomation' => 'required',
         ];
+        if ($this->route()->getName() === 'service.store') {
+            $rules['feature_image'] = 'required';
+        }
+
+        return $rules;
     }
     /**
      * Get custom messages for validator errors.
@@ -39,8 +44,8 @@ class ServiceRequest extends FormRequest
     public function messages()
     {
         return [
-            // 'name.required' => 'The name field is required.',
-            // 'name.max' => 'The name field should not exceed 200 characters.'
-        ];
+                // 'name.required' => 'The name field is required.',
+                // 'name.max' => 'The name field should not exceed 200 characters.'
+            ];
     }
 }

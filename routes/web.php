@@ -6,7 +6,10 @@ use App\Http\Controllers\HomeController;
 
 //Route mặc định
 Route::get('/', function () {
-    return view('home');
+    return view('homepage');
+});
+Route::get('/admin', function () {
+    return view('admin.dashboard');
 });
 // Route cho trang chủ sử dụng HomeController
 //                      Controller              function
@@ -14,7 +17,6 @@ Route::get('/homepage', [HomeController::class, 'index']);
 Route::get('/homepage/filter', [HomeController::class, 'filter'])->name('homepage.filter');
 
 // Route cho trang chủ sử dụng ServiceController
-// Route::resource('service', ServiceController::class);
 Route::get('/service', [ServiceController::class, 'index'])->name('service.index');
 Route::get('/service/create', [ServiceController::class, 'create'])->name('service.create');
 Route::post('/service/create', [ServiceController::class, 'store'])->name('service.store');

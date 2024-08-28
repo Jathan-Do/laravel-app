@@ -55,12 +55,8 @@ class Service extends Model
     }
     public static function filterServices($minSalary, $maxSalary, $jobTypes)
     {
-        $query = self::whereBetween('price', [$minSalary, $maxSalary]);
-
-        if (!empty($jobTypes)) {
-            $query->whereIn('name', $jobTypes);
-        }
-
-        return $query->orderBy('id', 'DESC')->get();
+        return self::whereBetween('price', [$minSalary, $maxSalary])
+            ->whereIn('name', $jobTypes)
+            ->get();
     }
 }
