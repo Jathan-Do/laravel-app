@@ -11,8 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         // Truy vấn dữ liệu từ bảng services
-        $services = Service::orderBy('id', 'DESC')->get();
-
+        $services = Service::getAllServices();
         // Trả về view home và truyền dữ liệu services vào view
         return view('homepage', compact('services'));
     }
@@ -22,15 +21,9 @@ class HomeController extends Controller
         $maxSalary = $request->input('max_salary', 50000000);
         $jobTypes = $request->input('job_types', []);
 
-        $query = Service::whereBetween('price', [$minSalary, $maxSalary]);
-
-        if (!empty($jobTypes)) {
-            $query->whereIn('name', $jobTypes);
-        }
-
-        
-        $services = $query->orderBy('id', 'DESC')->get();
-
+        // Gọi hàm filter từ model
+        $services = Service::filterServices($minSalary, $maxSalary, $jobTypes);
+        // Trả về view homepage và truyền dữ liệu services vào view
         return view('homepage', compact('services'));
     }
     public function detail(){

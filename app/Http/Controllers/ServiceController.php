@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Service;
+use App\Http\Requests\ServiceRequest;
 
 class ServiceController extends Controller
 {
@@ -13,7 +14,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::orderBy('id', 'DESC')->get();
+        $services = Service::getAllServices();
         return view('list', compact('services'));
     }
 
@@ -28,42 +29,9 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ServiceRequest $request)
     {
-        $data = $request->validate(
-            [
-                'name' => 'required|max:200',
-                'des' => 'required|max:200',
-                'price' => 'required',
-                'promotional_price' => 'required',
-                'exp_date' => 'required',
-                'status' => 'required',
-                'infomation' => 'required',
-                'feature_image' => 'required',
-            ],
-            [
-                // 'name.unique' => 'Name is duplicated',
-            ],
-        );
-        $service = new Service();
-        $service->name = $data['name'];
-        $service->des = $data['des'];
-        $service->price = $data['price'];
-        $service->promotional_price = $data['promotional_price'];
-        $service->exp_date = $data['exp_date'];
-        $service->status = $data['status'];
-        $service->infomation = $data['infomation'];
-
-        $get_image = $request->file('feature_image');
-        $path = 'uploads/services/';
-        if ($get_image) {
-            $get_name_image = $get_image->getClientOriginalName();
-            $name_image = current(explode('.', $get_name_image));
-            $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
-            $get_image->move($path, $new_image);
-            $service->feature_image = $new_image;
-        }
-        $service->save();
+        Service::createService($request->validated(), $request->file('feature_image'));
         return redirect()->route('service.index');
     }
 
@@ -80,48 +48,16 @@ class ServiceController extends Controller
      */
     public function edit(string $id)
     {
-        $service = Service::find($id);
-        return view('edit',compact('service'));
+        $service = Service::getServiceById($id);
+        return view('edit', compact('service'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $data = $request->validate(
-            [
-                'name' => 'required|max:200',
-                'des' => 'required|max:200',
-                'price' => 'required',
-                'promotional_price' => 'required',
-                'exp_date' => 'required',
-                'status' => 'required',
-                'infomation' => 'required',
-            ],
-            [
-                // 'name.unique' => 'Name is duplicated',
-            ],
-        );
-        $service = Service::find($id);
-        $service->name = $data['name'];
-        $service->des = $data['des'];
-        $service->price = $data['price'];
-        $service->promotional_price = $data['promotional_price'];
-        $service->exp_date = $data['exp_date'];
-        $service->status = $data['status'];
-        $service->infomation = $data['infomation'];
-
-        $get_image = $request->file('feature_image');
-        $path = 'uploads/services/';
-        if ($get_image) {
-            $get_name_image = $get_image->getClientOriginalName();
-            $name_image = current(explode('.', $get_name_image));
-            $new_image = $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension();
-            $get_image->move($path, $new_image);
-            $service->feature_image = $new_image;
-        }
-        $service->save();
+    public function update(ServiceRequest $request, string $id)
+    {        
+        Service::updateService($id, $request->validated(), $request->file('feature_image'));
         return redirect()->route('service.index');
     }
 
@@ -130,8 +66,7 @@ class ServiceController extends Controller
      */
     public function destroy(string $id)
     {
-        $service = Service::find($id);
-        $service->delete();
+        Service::deleteService($id);
         return redirect()->route('service.index');
     }
 }
